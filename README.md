@@ -11,9 +11,9 @@ Work in progress. Current stage: **console game against a random bot**.
 ## Roadmap
 
 - [x] Console game: play White against a bot that picks random legal moves
-- [ ] Position evaluation (material count)
-- [ ] Minimax search
-- [ ] Alpha-beta pruning
+- [x] Position evaluation (material count)
+- [x] Minimax search
+- [x] Alpha-beta pruning
 - [ ] Piece-square tables and move ordering
 - [ ] Iterative deepening with a time limit
 - [ ] Quiescence search and transposition table
