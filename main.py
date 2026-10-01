@@ -2,7 +2,7 @@ import chess
 from engine.evaluate import evaluate
 from engine.search import find_best_move
 
-DEPTH = 3
+DEPTH = 4
 
 board = chess.Board()
 
