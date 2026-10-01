@@ -1,6 +1,8 @@
-import random
 import chess
 from engine.evaluate import evaluate
+from engine.search import find_best_move
+
+DEPTH = 3
 
 board = chess.Board()
 
@@ -20,7 +22,8 @@ while not board.is_game_over():
             print("Недопустимый ход")
             continue
     else:
-        move = random.choice(list(board.legal_moves))
+        print("Бот думает...")
+        move = find_best_move(board, DEPTH)
         print(f"Бот сходил: {move}")
 
     board.push(move)
