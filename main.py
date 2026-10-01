@@ -1,10 +1,12 @@
 import random
 import chess
+from engine.evaluate import evaluate
 
 board = chess.Board()
 
 while not board.is_game_over():
     print(board)
+    print(f"Оценка: {evaluate(board)}")
     print()
 
     if board.turn == chess.WHITE:
@@ -25,4 +27,3 @@ while not board.is_game_over():
 
 print(board)
 print("Результат:", board.result())
-
