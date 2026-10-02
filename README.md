@@ -17,7 +17,7 @@ Work in progress. Current stage: **console game against a random bot**.
 - [x] Piece-square tables and move ordering
 - [ ] Iterative deepening with a time limit
 - [x] Quiescence search and transposition table
-- [ ] UCI protocol support (play from a GUI or on Lichess)
+- [x] UCI protocol support (play from a GUI or on Lichess)
 
 ## Getting started
 
