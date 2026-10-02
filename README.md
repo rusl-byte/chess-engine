@@ -6,18 +6,19 @@ Move legality and board state are handled by the [`python-chess`](https://python
 
 ## Status
 
-Work in progress. Current stage: **console game against a random bot**.
+Alpha-beta search with piece-square evaluation, quiescence search and UCI support.
 
 ## Roadmap
 
-- [x] Console game: play White against a bot that picks random legal moves
+- [x] Console game: play against the engine as White or Black
 - [x] Position evaluation (material count)
 - [x] Minimax search
 - [x] Alpha-beta pruning
 - [x] Piece-square tables and move ordering
+- [x] Quiescence search
+- [x] UCI protocol support
 - [ ] Iterative deepening with a time limit
-- [ ] Quiescence search and transposition table
-- [ ] UCI protocol support (play from a GUI or on Lichess)
+- [ ] Transposition table
 
 ## Getting started
 
