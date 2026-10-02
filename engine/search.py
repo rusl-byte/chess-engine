@@ -7,8 +7,11 @@ INF = float("inf")
 # счётчик просмотренных позиций, чтобы сравнивать скорость
 stats = {"nodes": 0}
 
+# настройки поиска (quiescence можно выключить для сравнения)
+config = {"quiescence": True}
 
-def order_moves(board):
+
+def order_moves(board, captures_only=False):
     """Сортирует ходы: сначала выгодные взятия и превращения."""
 
     def move_score(move):
@@ -23,7 +26,48 @@ def order_moves(board):
             return PIECE_VALUES[move.promotion]
         return 0
 
-    return sorted(board.legal_moves, key=move_score, reverse=True)
+    moves = list(board.legal_moves)
+    if captures_only:
+        moves = [m for m in moves if board.is_capture(m) or m.promotion]
+    return sorted(moves, key=move_score, reverse=True)
+
+
+def quiescence(board, alpha, beta, maximizing):
+    """Доигрывает взятия до спокойной позиции, прежде чем оценить её."""
+    stats["nodes"] += 1
+    if board.is_game_over():
+        return evaluate(board)
+
+    stand_pat = evaluate(board)  # оценка, если никто ничего не берёт
+
+    if maximizing:
+        if stand_pat >= beta:
+            return stand_pat
+        alpha = max(alpha, stand_pat)
+        best = stand_pat
+        for move in order_moves(board, captures_only=True):
+            board.push(move)
+            score = quiescence(board, alpha, beta, False)
+            board.pop()
+            best = max(best, score)
+            alpha = max(alpha, best)
+            if alpha >= beta:
+                break
+        return best
+    else:
+        if stand_pat <= alpha:
+            return stand_pat
+        beta = min(beta, stand_pat)
+        best = stand_pat
+        for move in order_moves(board, captures_only=True):
+            board.push(move)
+            score = quiescence(board, alpha, beta, True)
+            board.pop()
+            best = min(best, score)
+            beta = min(beta, best)
+            if alpha >= beta:
+                break
+        return best
 
 
 def minimax(board, depth, maximizing):
@@ -51,11 +95,18 @@ def minimax(board, depth, maximizing):
 
 
 def alphabeta(board, depth, alpha, beta, maximizing):
-    """Minimax с alpha-beta отсечением и сортировкой ходов."""
-    stats["nodes"] += 1
-    if depth == 0 or board.is_game_over():
+    """Minimax с alpha-beta, сортировкой ходов и quiescence search."""
+    if board.is_game_over():
+        stats["nodes"] += 1
         return evaluate(board)
 
+    if depth == 0:
+        if config["quiescence"]:
+            return quiescence(board, alpha, beta, maximizing)
+        stats["nodes"] += 1
+        return evaluate(board)
+
+    stats["nodes"] += 1
     if maximizing:
         best = -INF
         for move in order_moves(board):

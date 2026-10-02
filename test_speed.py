@@ -1,6 +1,7 @@
 import time
 import chess
-from engine.search import minimax, alphabeta, stats, INF
+from engine.search import minimax, alphabeta, stats, config, INF
+config["quiescence"] = False
 
 # Середина партии (итальянская партия, после 3 ходов)
 board = chess.Board("r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3")
