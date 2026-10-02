@@ -17,7 +17,7 @@ Alpha-beta search with piece-square evaluation, quiescence search and UCI suppor
 - [x] Piece-square tables and move ordering
 - [x] Quiescence search
 - [x] UCI protocol support
-- [ ] Iterative deepening with a time limit
+- [x] Iterative deepening with a time limit
 - [ ] Transposition table
 
 ## Getting started
