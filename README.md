@@ -70,6 +70,38 @@ chess-engine/
 
 The `engine/` package with `evaluate.py` and `search.py` will be added in the next stages.
 
+## Benchmarks
+
+Test position: Italian Game after 3 moves, search depth 3.
+
+| Search | Positions searched | Time |
+|--------|-------------------:|-----:|
+| Minimax | 24,942 | 1.08 s |
+| Alpha-beta + move ordering | 1,262 | 0.06 s |
+
+Alpha-beta with move ordering searches about **20x fewer positions** and returns the same evaluation.
+Reproduce: `python test_speed.py`
+
+## Match against Stockfish
+
+20 games, colors alternated, first 2 plies random for variety.
+Engine: depth 3. Opponent: Stockfish with `UCI_LimitStrength` on and `UCI_Elo = 1320`, 0.1 s per move.
+
+| Wins | Draws | Losses | Score |
+|-----:|------:|-------:|------:|
+| 13 | 2 | 5 | 14 / 20 (70%) |
+
+Twenty games give a wide margin of error (about 51-89% at 95% confidence), and Stockfish's
+`UCI_Elo` is calibrated for different time controls, so this is a rough indicator, not an exact rating.
+Games are saved in `results.pgn`.
+
+Reproduce: `python match.py --games 20 --elo 1320 --depth 3`
+
+## UCI
+
+The engine speaks the UCI protocol, so it can be plugged into GUIs such as Cute Chess or Arena:
+
+    python /path/to/chess-engine-repo/uci.py
 ## Tech stack
 
 - Python 3
