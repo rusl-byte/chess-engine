@@ -89,6 +89,19 @@ PST = {
 }
 
 
+# Предрассчитанные таблицы "цена фигуры + бонус за клетку" для каждого цвета.
+# python-chess нумерует клетки с a1, а наши таблицы записаны с a8,
+# поэтому для белых клетку отражаем по вертикали.
+WHITE_TABLE = {}
+BLACK_TABLE = {}
+for _pt, _table in PST.items():
+    _v = PIECE_VALUES[_pt]
+    WHITE_TABLE[_pt] = [_v + _table[chess.square_mirror(sq)] for sq in range(64)]
+    BLACK_TABLE[_pt] = [_v + _table[sq] for sq in range(64)]
+
+PIECE_TYPES = list(PST.keys())
+
+
 def evaluate(board):
     """Оценка позиции: > 0 лучше белые, < 0 лучше чёрные."""
     if board.is_checkmate():
@@ -99,14 +112,11 @@ def evaluate(board):
         return 0  # пат или ничья
 
     score = 0
-    for square, piece in board.piece_map().items():
-        value = PIECE_VALUES[piece.piece_type]
-        table = PST[piece.piece_type]
-        if piece.color == chess.WHITE:
-            # python-chess нумерует клетки с a1, а таблица идёт с a8,
-            # поэтому для белых переворачиваем номер клетки по вертикали
-            score += value + table[chess.square_mirror(square)]
-        else:
-            # для чёрных таблица уже "перевёрнута" сама собой
-            score -= value + table[square]
+    for piece_type in PIECE_TYPES:
+        white = WHITE_TABLE[piece_type]
+        black = BLACK_TABLE[piece_type]
+        for square in board.pieces(piece_type, chess.WHITE):
+            score += white[square]
+        for square in board.pieces(piece_type, chess.BLACK):
+            score -= black[square]
     return score
