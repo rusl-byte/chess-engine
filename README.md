@@ -17,7 +17,7 @@ Alpha-beta search with piece-square evaluation, quiescence search and UCI suppor
 - [x] Piece-square tables and move ordering
 - [x] Quiescence search
 - [x] UCI protocol support
-- [ ] Iterative deepening with a time limit
+- [x] Iterative deepening with a time limit
 - [ ] Transposition table
 
 ## Getting started
@@ -84,18 +84,18 @@ Reproduce: `python test_speed.py`
 
 ## Match against Stockfish
 
-20 games, colors alternated, first 2 plies random for variety.
-Engine: depth 3. Opponent: Stockfish with `UCI_LimitStrength` on and `UCI_Elo = 1320`, 0.1 s per move.
+114 games, colors alternated, first 2 plies random for variety.
+Engine: fixed depth 3. Opponent: Stockfish with `UCI_LimitStrength` on and `UCI_Elo = 1320`, 0.1 s per move.
 
-| Wins | Draws | Losses | Score |
-|-----:|------:|-------:|------:|
-| 13 | 2 | 5 | 14 / 20 (70%) |
+| Wins | Draws | Losses | Score | 95% interval |
+|-----:|------:|-------:|------:|-------------:|
+| 69 | 12 | 33 | 75 / 114 (65.8%) | 57.6% - 74.0% |
 
-Twenty games give a wide margin of error (about 51-89% at 95% confidence), and Stockfish's
-`UCI_Elo` is calibrated for different time controls, so this is a rough indicator, not an exact rating.
-Games are saved in `results.pgn`.
+The engine scores clearly above 50% against this opponent. Stockfish's `UCI_Elo` is calibrated
+for different time controls, so this is a relative indicator, not an absolute rating.
+All games are in `results_depth3.pgn`.
 
-Reproduce: `python match.py --games 20 --elo 1320 --depth 3`
+Reproduce: `python match.py --games 26 --depth 3`
 
 ## UCI
 
